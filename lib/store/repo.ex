@@ -1,5 +1,5 @@
 defmodule Store.Repo do
-  use Ecto.Repo, otp_app: :store
+  use Ecto.Repo, otp_app: :store, adapter: Mongo.Ecto
 
   @doc """
   Dynamically loads the repository url from the
