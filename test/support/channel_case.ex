@@ -26,12 +26,7 @@ defmodule StoreWeb.ChannelCase do
   end
 
 
-  setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Store.Repo)
-    unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(Store.Repo, {:shared, self()})
-    end
+  setup _tags do
     :ok
   end
-
 end
