@@ -14,6 +14,8 @@ defmodule Store.Application do
       supervisor(StoreWeb.Endpoint, []),
       # Start your own worker by calling: Store.Worker.start_link(arg1, arg2, arg3)
       # worker(Store.Worker, [arg1, arg2, arg3]),
+      Store.Redix,
+      Store.RedixConsumer,
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

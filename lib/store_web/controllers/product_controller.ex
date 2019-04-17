@@ -33,6 +33,14 @@ defmodule StoreWeb.ProductController do
     end
   end
 
+  def update_price_and_quantity(conn, %{"id" => id, "product" => product_params}) do
+    product = Products.get_product!(id)
+
+    with {:ok, %Product{} = product} <- Products.update_price_quantity(product, product_params[:price], product_params[:quantity]) do
+      render(conn, "show.json", product: product)
+    end
+  end
+
   def delete(conn, %{"id" => id}) do
     product = Products.get_product!(id)
     with {:ok, %Product{}} <- Products.delete_product(product) do

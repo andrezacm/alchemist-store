@@ -71,10 +71,32 @@ defmodule Store.ProductsTest do
       assert {:ok, product} = Products.fetch_product(product.id)
     end
 
-    test "fetch_product/1 with id from inexistent product" do
+    test "fetch_product/1 with id from inexistent product returns error not found" do
       product = product_fixture()
       assert {:ok, %Product{}} = Products.delete_product(product)
       assert {:error, :not_found} = Products.fetch_product(product.id)
+    end
+
+    test "update_price_and_quantity/3 adds product's price and quantity to redis" do
+      product = product_fixture()
+      price = "5.0"
+      quantity = "5"
+
+      Products.update_price_and_quantity(product, price, quantity)
+
+      assert {:ok, ^price} = Store.Redix.command(["GET", "#{product.id}:price"])
+      assert {:ok, ^quantity} = Store.Redix.command(["GET", "#{product.id}:quantity"])
+    end
+
+    test "get_price_and_quantity/3 gets price and quantity from redis" do
+      product = product_fixture()
+      price = "5.0"
+      quantity = "5"
+
+      Store.Redix.command(~w(SET #{product.id}:price #{price}))
+      Store.Redix.command(~w(SET #{product.id}:quantity #{quantity}))
+
+      assert {:ok, %{price: ^price, quantity: ^quantity}} = Products.get_price_and_quantity(product)
     end
   end
 end

@@ -38,7 +38,8 @@ defmodule Store.Mixfile do
       {:mongodb_ecto, github: "michalmuskala/mongodb_ecto", branch: "ecto-2"},
       {:gettext, "~> 0.11"},
       {:cowboy, "~> 1.0"},
-      {:plug_cowboy, "~> 1.0"}
+      {:plug_cowboy, "~> 1.0"},
+      {:redix, "~> 0.9"}
     ]
   end
 

@@ -106,4 +106,24 @@ defmodule Store.Products do
   def delete_product(%Product{} = product) do
     Repo.delete(product)
   end
+
+  @doc """
+  Updates product's price and quantity, storing the new values to redis.
+  """
+  def update_price_and_quantity(%Product{} = product, price, quantity) do
+    Store.Redix.command(~w(SET #{product.id}:price #{price}))
+    Store.Redix.command(~w(SET #{product.id}:quantity #{quantity}))
+
+    Store.Redix.command(~w(PUBLISH product put:#{product.id}))
+  end
+
+  @doc """
+  Fetchs product's price and quantity stored in redis.
+  """
+  def get_price_and_quantity(%Product{} = product) do
+    {:ok, price} = Store.Redix.command(~w(GET #{product.id}:price))
+    {:ok, quantity} = Store.Redix.command(~w(GET #{product.id}:quantity))
+
+    {:ok, %{price: price, quantity: quantity}}
+  end
 end
