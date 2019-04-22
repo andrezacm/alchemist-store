@@ -12,7 +12,6 @@ defmodule Store.RabbitLogger do
   end
 
   def publish(message) do
-    IO.inspect("Logging #{message}")
     GenServer.cast(:publisher, {:publish, message})
   end
 
