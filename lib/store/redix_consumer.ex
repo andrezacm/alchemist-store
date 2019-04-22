@@ -24,8 +24,6 @@ defmodule Store.RedixConsumer do
   end
 
   def handle_info(message, state) do
-    IO.inspect("OPA info")
-    IO.inspect(message)
     {:noreply, state}
   end
 end
