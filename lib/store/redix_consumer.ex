@@ -2,7 +2,7 @@ defmodule Store.RedixConsumer do
   use GenServer
   alias Store.Products
 
-  def start_link(_) do
+  def start_link() do
     GenServer.start_link(__MODULE__, nil, name: __MODULE__)
   end
 
