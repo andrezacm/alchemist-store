@@ -7,17 +7,19 @@ defmodule Store.ReddixConsumerTest do
     channel = "test_channel"
     {:ok, pubsub} = Redix.PubSub.start_link()
     {:ok, ref} = Redix.PubSub.subscribe(pubsub, channel, pid)
-   
-    {:ok,
-      pid: pid,
-      channel: channel,
-      ref: ref,
-      pubsub: pubsub
-    }
+
+    {:ok, pid: pid, channel: channel, ref: ref, pubsub: pubsub}
   end
 
   test "updates product", meta do
-    {:ok, product} = Products.create_product(%{description: "some description", name: "some name", price: "120.5", quantity: 42, sku: "some sku"})
+    {:ok, product} =
+      Products.create_product(%{
+        description: "some description",
+        name: "some name",
+        price: "120.5",
+        quantity: 42,
+        sku: "some sku"
+      })
 
     price = 5.0
     quantity = 5
@@ -32,7 +34,7 @@ defmodule Store.ReddixConsumerTest do
         meta[:ref],
         :message,
         %{channel: meta[:channel], payload: "put:#{product.id}"}
-      }, 
+      },
       {meta[:pid], meta[:channel], meta[:ref]}
     )
 

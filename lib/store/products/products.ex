@@ -40,13 +40,13 @@ defmodule Store.Products do
   Fetchs a single product.
 
   ## Examples
-  
+
       iex> fetch_product(123)
       {:ok, %Product{}}
 
       iex> fetch_product(123)
       {:error, ...}
-  
+
   """
   def fetch_product(id) do
     case Repo.get(Product, id) do

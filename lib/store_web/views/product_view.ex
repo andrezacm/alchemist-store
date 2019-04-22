@@ -11,11 +11,13 @@ defmodule StoreWeb.ProductView do
   end
 
   def render("product.json", %{product: product}) do
-    %{id: product.id,
+    %{
+      id: product.id,
       name: product.name,
       sku: product.sku,
       description: product.description,
       quantity: product.quantity,
-      price: product.price}
+      price: product.price
+    }
   end
 end

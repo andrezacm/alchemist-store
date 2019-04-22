@@ -14,8 +14,7 @@ config :store, StoreWeb.Endpoint,
   url: [host: "localhost"],
   secret_key_base: "LWdz+vt53XBvqFDn4fMSS4L/m9xHMMDrg8Bl06pFAQOCYFEZA1c1RITpe6u8+Crl",
   render_errors: [view: StoreWeb.ErrorView, accepts: ~w(json)],
-  pubsub: [name: Store.PubSub,
-           adapter: Phoenix.PubSub.PG2]
+  pubsub: [name: Store.PubSub, adapter: Phoenix.PubSub.PG2]
 
 # Configures Elixir's Logger
 config :logger, :console,
@@ -24,4 +23,4 @@ config :logger, :console,
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
-import_config "#{Mix.env}.exs"
+import_config "#{Mix.env()}.exs"

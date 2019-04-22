@@ -3,17 +3,12 @@ defmodule Store.RabbitLoggerTest do
   alias Store.RabbitLogger
 
   setup do
-    {:ok, connection} = AMQP.Connection.open
+    {:ok, connection} = AMQP.Connection.open()
     {:ok, channel} = AMQP.Channel.open(connection)
     AMQP.Queue.declare(channel, "test_queue")
 
-    on_exit fn -> :ok = AMQP.Connection.close(connection) end
-    {:ok,
-      connection: connection,
-      channel: channel,
-      queue: "test_queue",
-      exchange: ""
-    }
+    on_exit(fn -> :ok = AMQP.Connection.close(connection) end)
+    {:ok, connection: connection, channel: channel, queue: "test_queue", exchange: ""}
   end
 
   test "publish messages to rabbit", meta do

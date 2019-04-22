@@ -2,7 +2,7 @@ defmodule Store.Redix do
   @pool_size 5
 
   def child_spec(_args) do
-    children = 
+    children =
       for i <- 0..(@pool_size - 1) do
         Supervisor.child_spec({Redix, name: :"redix_#{i}"}, id: {Redix, i})
       end

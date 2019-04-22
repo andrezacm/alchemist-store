@@ -4,7 +4,7 @@ defmodule StoreWeb.ProductController do
   alias Store.Products
   alias Store.Products.Product
 
-  action_fallback StoreWeb.FallbackController
+  action_fallback(StoreWeb.FallbackController)
 
   def index(conn, _params) do
     products = Products.list_products()
@@ -36,13 +36,19 @@ defmodule StoreWeb.ProductController do
   def update_price_and_quantity(conn, %{"id" => id, "product" => product_params}) do
     product = Products.get_product!(id)
 
-    with {:ok, %Product{} = product} <- Products.update_price_quantity(product, product_params[:price], product_params[:quantity]) do
+    with {:ok, %Product{} = product} <-
+           Products.update_price_quantity(
+             product,
+             product_params[:price],
+             product_params[:quantity]
+           ) do
       render(conn, "show.json", product: product)
     end
   end
 
   def delete(conn, %{"id" => id}) do
     product = Products.get_product!(id)
+
     with {:ok, %Product{}} <- Products.delete_product(product) do
       send_resp(conn, :no_content, "")
     end

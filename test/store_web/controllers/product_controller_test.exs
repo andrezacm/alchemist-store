@@ -5,8 +5,20 @@ defmodule StoreWeb.ProductControllerTest do
   alias Store.Products
   alias Store.Products.Product
 
-  @create_attrs %{description: "some description", name: "some name", price: 120.5, quantity: 42, sku: "some sku"}
-  @update_attrs %{description: "some updated description", name: "some updated name", price: 456.7, quantity: 43, sku: "some updated sku"}
+  @create_attrs %{
+    description: "some description",
+    name: "some name",
+    price: 120.5,
+    quantity: 42,
+    sku: "some sku"
+  }
+  @update_attrs %{
+    description: "some updated description",
+    name: "some updated name",
+    price: 456.7,
+    quantity: 43,
+    sku: "some updated sku"
+  }
   @invalid_attrs %{description: nil, name: nil, price: nil, quantity: nil, sku: nil}
 
   def fixture(:product) do
@@ -20,28 +32,30 @@ defmodule StoreWeb.ProductControllerTest do
 
   describe "index" do
     test "lists all products", %{conn: conn} do
-      conn = get conn, product_path(conn, :index)
+      conn = get(conn, product_path(conn, :index))
       assert json_response(conn, 200)["data"] == []
     end
   end
 
   describe "create product" do
     test "renders product when data is valid", %{conn: conn} do
-      conn = post conn, product_path(conn, :create), product: @create_attrs
+      conn = post(conn, product_path(conn, :create), product: @create_attrs)
       assert %{"id" => id} = json_response(conn, 201)["data"]
 
-      conn = get conn, product_path(conn, :show, id)
+      conn = get(conn, product_path(conn, :show, id))
+
       assert json_response(conn, 200)["data"] == %{
-        "id" => id,
-        "description" => "some description",
-        "name" => "some name",
-        "price" => 120.5,
-        "quantity" => 42,
-        "sku" => "some sku"}
+               "id" => id,
+               "description" => "some description",
+               "name" => "some name",
+               "price" => 120.5,
+               "quantity" => 42,
+               "sku" => "some sku"
+             }
     end
 
     test "renders errors when data is invalid", %{conn: conn} do
-      conn = post conn, product_path(conn, :create), product: @invalid_attrs
+      conn = post(conn, product_path(conn, :create), product: @invalid_attrs)
       assert json_response(conn, 422)["errors"] != %{}
     end
   end
@@ -50,21 +64,23 @@ defmodule StoreWeb.ProductControllerTest do
     setup [:create_product]
 
     test "renders product when data is valid", %{conn: conn, product: %Product{id: id} = product} do
-      conn = put conn, product_path(conn, :update, product), product: @update_attrs
+      conn = put(conn, product_path(conn, :update, product), product: @update_attrs)
       assert %{"id" => ^id} = json_response(conn, 200)["data"]
 
-      conn = get conn, product_path(conn, :show, id)
+      conn = get(conn, product_path(conn, :show, id))
+
       assert json_response(conn, 200)["data"] == %{
-        "id" => id,
-        "description" => "some updated description",
-        "name" => "some updated name",
-        "price" => 456.7,
-        "quantity" => 43,
-        "sku" => "some updated sku"}
+               "id" => id,
+               "description" => "some updated description",
+               "name" => "some updated name",
+               "price" => 456.7,
+               "quantity" => 43,
+               "sku" => "some updated sku"
+             }
     end
 
     test "renders errors when data is invalid", %{conn: conn, product: product} do
-      conn = put conn, product_path(conn, :update, product), product: @invalid_attrs
+      conn = put(conn, product_path(conn, :update, product), product: @invalid_attrs)
       assert json_response(conn, 422)["errors"] != %{}
     end
   end
@@ -73,11 +89,12 @@ defmodule StoreWeb.ProductControllerTest do
     setup [:create_product]
 
     test "deletes chosen product", %{conn: conn, product: product} do
-      conn = delete conn, product_path(conn, :delete, product)
+      conn = delete(conn, product_path(conn, :delete, product))
       assert response(conn, 204)
-      assert_error_sent 404, fn ->
-       get conn, product_path(conn, :show, product)
-      end
+
+      assert_error_sent(404, fn ->
+        get(conn, product_path(conn, :show, product))
+      end)
     end
   end
 

@@ -7,9 +7,27 @@ defmodule Store.ProductsTest do
   describe "products" do
     alias Store.Products.Product
 
-    @valid_attrs %{description: "some description", name: "some name", price: "120.5", quantity: 42, sku: "some sku"}
-    @update_attrs %{description: "some updated description", name: "some updated name", price: "456.7", quantity: 43, sku: "some updated sku"}
-    @invalid_attrs %{description: nil, name: nil, price: nil, quantity: nil, sku: nil}
+    @valid_attrs %{
+      description: "some description",
+      name: "some name",
+      price: "120.5",
+      quantity: 42,
+      sku: "some sku"
+    }
+    @update_attrs %{
+      description: "some updated description",
+      name: "some updated name",
+      price: "456.7",
+      quantity: 43,
+      sku: "some updated sku"
+    }
+    @invalid_attrs %{
+      description: nil,
+      name: nil,
+      price: nil,
+      quantity: nil,
+      sku: nil
+    }
 
     def product_fixture(attrs \\ %{}) do
       {:ok, product} =
@@ -96,7 +114,8 @@ defmodule Store.ProductsTest do
       Store.Redix.command(~w(SET #{product.id}:price #{price}))
       Store.Redix.command(~w(SET #{product.id}:quantity #{quantity}))
 
-      assert {:ok, %{price: ^price, quantity: ^quantity}} = Products.get_price_and_quantity(product)
+      assert {:ok, %{price: ^price, quantity: ^quantity}} =
+               Products.get_price_and_quantity(product)
     end
   end
 end
