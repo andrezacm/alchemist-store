@@ -20,7 +20,7 @@ defmodule Store.Mixfile do
   def application do
     [
       mod: {Store.Application, []},
-      extra_applications: [:logger, :runtime_tools, :mongodb_ecto, :ecto]
+      extra_applications: [:logger, :runtime_tools, :mongodb_ecto, :ecto, :amqp]
     ]
   end
 
@@ -39,7 +39,9 @@ defmodule Store.Mixfile do
       {:gettext, "~> 0.11"},
       {:cowboy, "~> 1.0"},
       {:plug_cowboy, "~> 1.0"},
-      {:redix, "~> 0.9"}
+      {:redix, "~> 0.9"},
+      {:amqp, "~> 0.3"},
+      {:json, "~> 1.2"}
     ]
   end
 

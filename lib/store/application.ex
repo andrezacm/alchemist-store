@@ -16,6 +16,7 @@ defmodule Store.Application do
       # worker(Store.Worker, [arg1, arg2, arg3]),
       Store.Redix,
       Store.RedixConsumer,
+      worker(Store.RabbitLogger, [])
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

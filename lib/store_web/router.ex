@@ -3,6 +3,7 @@ defmodule StoreWeb.Router do
 
   pipeline :api do
     plug :accepts, ["json"]
+    plug StoreWeb.Plugs.RequestLogger
   end
 
   scope "/api", StoreWeb do
