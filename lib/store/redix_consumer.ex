@@ -2,15 +2,19 @@ defmodule Store.RedixConsumer do
   use GenServer
   alias Store.Products
 
+  # Client API
+  
   def start_link() do
-    GenServer.start_link(__MODULE__, nil, name: __MODULE__)
+    GenServer.start_link(__MODULE__, "product", name: __MODULE__)
   end
 
-  def init(_) do
+  # Server API
+  
+  def init(channel) do
     pid = self()
     {:ok, pubsub} = Redix.PubSub.start_link()
-    {:ok, ref} = Redix.PubSub.subscribe(pubsub, "product", pid)
-    {:ok, {pid, "product", ref}}
+    {:ok, ref} = Redix.PubSub.subscribe(pubsub, channel, pid)
+    {:ok, {pid, channel, ref}}
   end
 
   def handle_info({pubsub, pid, ref, :message, %{channel: channel, payload: "put:" <> payload}}, state) do
