@@ -23,8 +23,9 @@ defmodule Store.RedixConsumer do
       ) do
     IO.inspect("Updating #{payload}")
 
+    {:ok, product_attrs} = Products.get_price_and_quantity(payload)
+
     product = Products.get_product!(payload)
-    {:ok, product_attrs} = Products.get_price_and_quantity(product)
     Products.update_product(product, product_attrs)
 
     {:noreply, state}

@@ -115,7 +115,7 @@ defmodule Store.ProductsTest do
       Store.Redix.command(~w(SET #{product.id}:quantity #{quantity}))
 
       assert {:ok, %{price: ^price, quantity: ^quantity}} =
-               Products.get_price_and_quantity(product)
+               Products.get_price_and_quantity(product.id)
     end
   end
 end

@@ -120,9 +120,9 @@ defmodule Store.Products do
   @doc """
   Fetchs product's price and quantity stored in redis.
   """
-  def get_price_and_quantity(%Product{} = product) do
-    {:ok, price} = Store.Redix.command(~w(GET #{product.id}:price))
-    {:ok, quantity} = Store.Redix.command(~w(GET #{product.id}:quantity))
+  def get_price_and_quantity(product_id) do
+    {:ok, price} = Store.Redix.command(~w(GET #{product_id}:price))
+    {:ok, quantity} = Store.Redix.command(~w(GET #{product_id}:quantity))
 
     {:ok, %{price: price, quantity: quantity}}
   end

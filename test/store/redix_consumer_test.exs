@@ -1,4 +1,4 @@
-defmodule Store.ReddixConsumerTest do
+defmodule Store.RedixConsumerTest do
   use ExUnit.Case, async: true
   alias Store.{Products, RedixConsumer, Products.Product}
 
@@ -8,10 +8,6 @@ defmodule Store.ReddixConsumerTest do
     {:ok, pubsub} = Redix.PubSub.start_link()
     {:ok, ref} = Redix.PubSub.subscribe(pubsub, channel, pid)
 
-    {:ok, pid: pid, channel: channel, ref: ref, pubsub: pubsub}
-  end
-
-  test "updates product", meta do
     {:ok, product} =
       Products.create_product(%{
         description: "some description",
@@ -21,11 +17,16 @@ defmodule Store.ReddixConsumerTest do
         sku: "some sku"
       })
 
+    {:ok, pid: pid, channel: channel, ref: ref, pubsub: pubsub, product_id: product.id}
+  end
+
+  test "updates product", meta do
     price = 5.0
     quantity = 5
+    product_id = meta[:product_id]
 
-    Store.Redix.command(~w(SET #{product.id}:price #{price}))
-    Store.Redix.command(~w(SET #{product.id}:quantity #{quantity}))
+    Store.Redix.command(~w(SET #{product_id}:price #{price}))
+    Store.Redix.command(~w(SET #{product_id}:quantity #{quantity}))
 
     RedixConsumer.handle_info(
       {
@@ -33,11 +34,11 @@ defmodule Store.ReddixConsumerTest do
         meta[:pid],
         meta[:ref],
         :message,
-        %{channel: meta[:channel], payload: "put:#{product.id}"}
+        %{channel: meta[:channel], payload: "put:#{product_id}"}
       },
       {meta[:pid], meta[:channel], meta[:ref]}
     )
 
-    assert %Product{price: ^price, quantity: ^quantity} = Products.get_product!(product.id)
+    assert %Product{price: ^price, quantity: ^quantity} = Products.get_product!(product_id)
   end
 end
