@@ -1,6 +1,4 @@
 defmodule StoreWeb.Plugs.RequestLogger do
-  import Plug.Conn
-
   def init(_), do: nil
 
   def call(conn, _default) do
