@@ -37,7 +37,7 @@ defmodule StoreWeb.ProductController do
     product = Products.get_product!(id)
 
     with {:ok, %Product{} = product} <-
-           Products.update_price_quantity(
+           Products.update_price_and_quantity(
              product,
              product_params[:price],
              product_params[:quantity]
