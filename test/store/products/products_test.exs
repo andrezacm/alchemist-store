@@ -86,7 +86,7 @@ defmodule Store.ProductsTest do
 
     test "fetch_product/1 fetches the product" do
       product = product_fixture()
-      assert {:ok, product} = Products.fetch_product(product.id)
+      assert {:ok, ^product} = Products.fetch_product(product.id)
     end
 
     test "fetch_product/1 with id from inexistent product returns error not found" do
