@@ -18,7 +18,7 @@ defmodule Store.RedixConsumer do
   end
 
   def handle_info(
-        {pubsub, pid, ref, :message, %{channel: channel, payload: "put:" <> payload}},
+        {_pubsub, _pid, _ref, :message, %{channel: _channel, payload: "put:" <> payload}},
         state
       ) do
     {:ok, product_attrs} = Products.get_price_and_quantity(payload)
@@ -29,7 +29,7 @@ defmodule Store.RedixConsumer do
     {:noreply, state}
   end
 
-  def handle_info(message, state) do
+  def handle_info(_message, state) do
     {:noreply, state}
   end
 end
