@@ -21,8 +21,6 @@ defmodule Store.RedixConsumer do
         {pubsub, pid, ref, :message, %{channel: channel, payload: "put:" <> payload}},
         state
       ) do
-    IO.inspect("Updating #{payload}")
-
     {:ok, product_attrs} = Products.get_price_and_quantity(payload)
 
     product = Products.get_product!(payload)
