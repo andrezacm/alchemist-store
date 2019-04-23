@@ -16,7 +16,7 @@ defmodule Store.RabbitLoggerTest do
 
     assert {:noreply, _state} = RabbitLogger.handle_cast(params, meta)
 
-    {:ok, payload, meta} = AMQP.Basic.get(meta[:channel], meta[:queue])
+    {:ok, payload, _meta} = AMQP.Basic.get(meta[:channel], meta[:queue])
 
     assert payload == "message"
   end
