@@ -98,6 +98,32 @@ defmodule StoreWeb.ProductControllerTest do
     end
   end
 
+  describe "get last product report" do
+    setup [:create_product]
+
+    test "renders last report file", %{conn: conn} do
+      Store.Products.Report.generate()
+
+      path = Application.get_env(:store, :upload_path) <> "/reports/products/"
+      file = Path.wildcard(path <> "*.csv") |> List.first()
+
+      on_exit(fn -> File.rm!(file) end)
+
+      conn = get(conn, product_path(conn, :get_last_report))
+      attachment = get_resp_header(conn, "content-disposition") |> List.first()
+
+      assert response(conn, 200)
+      assert get_resp_header(conn, "content-type") == ["text/csv"]
+      assert attachment =~ ~r/attachment; filename=\".+\.csv\"/
+    end
+
+    test "renders not found when report was not generated", %{conn: conn} do
+      conn = get(conn, product_path(conn, :get_last_report))
+
+      assert response(conn, 404)
+    end
+  end
+
   defp create_product(_) do
     product = fixture(:product)
     {:ok, product: product}

@@ -41,7 +41,8 @@ defmodule Store.Mixfile do
       {:plug_cowboy, "~> 1.0"},
       {:redix, "~> 0.9"},
       {:amqp, "~> 0.3"},
-      {:json, "~> 1.2"}
+      {:json, "~> 1.2"},
+      {:csv, "~> 2.3"}
     ]
   end
 

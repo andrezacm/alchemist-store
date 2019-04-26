@@ -48,3 +48,5 @@ config :store, Store.Repo,
   adapter: Mongo.Ecto,
   database: "store_development",
   hostname: "localhost"
+
+config :store, :upload_path, Path.expand("../uploads", __DIR__)

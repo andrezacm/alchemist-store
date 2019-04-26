@@ -8,4 +8,11 @@ defmodule Store.Repo do
   def init(_, opts) do
     {:ok, Keyword.put(opts, :url, System.get_env("DATABASE_URL"))}
   end
+
+  @doc """
+  List fields from repo structure.
+  """
+  def list_fields(structure) do
+    Map.keys(structure) -- [:__meta__, :__struct__]
+  end
 end

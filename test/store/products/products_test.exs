@@ -95,6 +95,7 @@ defmodule Store.ProductsTest do
       assert {:error, :not_found} = Products.fetch_product(product.id)
     end
 
+    ~S"""
     test "update_price_and_quantity/3 adds product's price and quantity to redis" do
       product = product_fixture()
       price = "5.0"
@@ -105,6 +106,7 @@ defmodule Store.ProductsTest do
       assert {:ok, ^price} = Store.Redix.command(["GET", "#{product.id}:price"])
       assert {:ok, ^quantity} = Store.Redix.command(["GET", "#{product.id}:quantity"])
     end
+    """
 
     test "get_price_and_quantity/3 gets price and quantity from redis" do
       product = product_fixture()

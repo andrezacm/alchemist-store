@@ -1,8 +1,7 @@
 defmodule StoreWeb.ProductController do
   use StoreWeb, :controller
 
-  alias Store.Products
-  alias Store.Products.Product
+  alias Store.{Products, Products.Product, Products.Report}
 
   action_fallback(StoreWeb.FallbackController)
 
@@ -51,6 +50,17 @@ defmodule StoreWeb.ProductController do
 
     with {:ok, %Product{}} <- Products.delete_product(product) do
       send_resp(conn, :no_content, "")
+    end
+  end
+
+  def generate_report(conn, _params) do
+    Report.start_link()
+    send_resp(conn, :no_content, "")
+  end
+
+  def get_last_report(conn, _params) do
+    with {:ok, report} <- Report.get_last() do
+      send_download(conn, {:file, report})
     end
   end
 end
