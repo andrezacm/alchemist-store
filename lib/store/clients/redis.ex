@@ -1,4 +1,7 @@
-defmodule Store.Redix do
+defmodule Store.Clients.Redis do
+  alias Store.Clients.CacheHandler
+
+  @behaviour CacheHandler
   @pool_size 5
 
   def child_spec(_args) do
@@ -8,12 +11,13 @@ defmodule Store.Redix do
       end
 
     %{
-      id: RedixSupervisor,
+      id: RedisSupervisor,
       type: :supervisor,
       start: {Supervisor, :start_link, [children, [strategy: :one_for_one]]}
     }
   end
 
+  @impl CacheHandler
   def command(command) do
     Redix.command(:"redix_#{random_index()}", command)
   end

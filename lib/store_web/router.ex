@@ -10,6 +10,10 @@ defmodule StoreWeb.Router do
     pipe_through(:api)
     resources("/products", ProductController)
 
+    scope "/products" do
+      put("/:id/update_price_and_quantity", ProductController, :update_price_and_quantity)
+    end
+
     scope "/product" do
       get("/generate_report", ProductController, :generate_report)
       get("/last_report", ProductController, :get_last_report)

@@ -1,8 +1,11 @@
-defmodule Store.RedixConsumerTest do
+defmodule Store.Products.CacheConsumerTest do
   use ExUnit.Case, async: true
-  alias Store.{Products, RedixConsumer, Products.Product}
+  alias Store.{Products, Products.CacheConsumer, Products.Product, Products.CachePublisher}
 
   setup do
+    client = Application.get_env(:store, :cache_client)
+    client.start_link()
+
     pid = self()
     channel = "test_channel"
     {:ok, pubsub} = Redix.PubSub.start_link()
@@ -25,10 +28,10 @@ defmodule Store.RedixConsumerTest do
     quantity = 5
     product_id = meta[:product_id]
 
-    Store.Redix.command(~w(SET #{product_id}:price #{price}))
-    Store.Redix.command(~w(SET #{product_id}:quantity #{quantity}))
+    CachePublisher.set_price(product_id, price)
+    CachePublisher.set_quantity(product_id, quantity)
 
-    RedixConsumer.handle_info(
+    CacheConsumer.handle_info(
       {
         meta[:pubsub],
         meta[:pid],

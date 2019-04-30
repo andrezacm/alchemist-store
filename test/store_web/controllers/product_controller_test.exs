@@ -98,6 +98,29 @@ defmodule StoreWeb.ProductControllerTest do
     end
   end
 
+  describe "updates product's price and quantity" do
+    setup do
+      client = Application.get_env(:store, :cache_client)
+      client.start_link()
+
+      create_product(nil)
+    end
+
+    test "stores new values in cache, send message to update product and renders product", %{
+      conn: conn,
+      product: %Product{id: id} = _product
+    } do
+      conn =
+        put(
+          conn,
+          product_path(conn, :update_price_and_quantity, id),
+          product: Map.take(@update_attrs, [:price, :quantity])
+        )
+
+      assert %{"id" => ^id} = json_response(conn, 200)["data"]
+    end
+  end
+
   describe "get last product report" do
     setup [:create_product]
 

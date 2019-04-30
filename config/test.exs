@@ -16,3 +16,5 @@ config :store, Store.Repo,
   hostname: "localhost"
 
 config :store, :upload_path, Path.expand("../test/support/uploads", __DIR__)
+
+config :store, :cache_client, Store.Clients.RedisMock

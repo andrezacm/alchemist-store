@@ -1,4 +1,4 @@
-defmodule Store.RedixConsumer do
+defmodule Store.Products.CacheConsumer do
   use GenServer
   alias Store.Products
 
@@ -23,8 +23,7 @@ defmodule Store.RedixConsumer do
       ) do
     {:ok, product_attrs} = Products.get_price_and_quantity(payload)
 
-    product = Products.get_product!(payload)
-    Products.update_product(product, product_attrs)
+    Products.get_product!(payload) |> Products.update_product(product_attrs)
 
     {:noreply, state}
   end

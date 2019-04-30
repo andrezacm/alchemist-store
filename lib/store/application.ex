@@ -14,8 +14,8 @@ defmodule Store.Application do
       supervisor(StoreWeb.Endpoint, []),
       # Start your own worker by calling: Store.Worker.start_link(arg1, arg2, arg3)
       # worker(Store.Worker, [arg1, arg2, arg3]),
-      Store.Redix,
-      worker(Store.RedixConsumer, []),
+      Store.Clients.Redis,
+      worker(Store.Products.CacheConsumer, []),
       worker(Store.RabbitLogger, [])
     ]
 

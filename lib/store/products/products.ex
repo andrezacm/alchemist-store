@@ -5,8 +5,7 @@ defmodule Store.Products do
 
   import Ecto.Query, warn: false
 
-  alias Store.Repo
-  alias Store.Products.Product
+  alias Store.{Repo, Products.Product, Products.CachePublisher}
 
   @doc """
   Returns the list of products.
@@ -108,21 +107,22 @@ defmodule Store.Products do
   end
 
   @doc """
-  Updates product's price and quantity, storing the new values to redis.
+  Updates product's price and quantity, storing the new values to cache.
   """
-  def update_price_and_quantity(%Product{} = product, price, quantity) do
-    Store.Redix.command(~w(SET #{product.id}:price #{price}))
-    Store.Redix.command(~w(SET #{product.id}:quantity #{quantity}))
+  def update_price_and_quantity(product_id, price, quantity) do
+    {:ok, "OK"} = CachePublisher.set_price(product_id, price)
+    {:ok, "OK"} = CachePublisher.set_quantity(product_id, quantity)
+    {:ok, _} = CachePublisher.publish(product_id)
 
-    Store.Redix.command(~w(PUBLISH product put:#{product.id}))
+    {:ok, %{price: price, quantity: quantity}}
   end
 
   @doc """
-  Fetchs product's price and quantity stored in redis.
+  Fetchs product's price and quantity stored in cache.
   """
   def get_price_and_quantity(product_id) do
-    {:ok, price} = Store.Redix.command(~w(GET #{product_id}:price))
-    {:ok, quantity} = Store.Redix.command(~w(GET #{product_id}:quantity))
+    {:ok, price} = CachePublisher.get_price(product_id)
+    {:ok, quantity} = CachePublisher.get_quantity(product_id)
 
     {:ok, %{price: price, quantity: quantity}}
   end
