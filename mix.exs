@@ -42,7 +42,9 @@ defmodule Store.Mixfile do
       {:redix, "~> 0.9"},
       {:amqp, "~> 0.3"},
       {:json, "~> 1.2"},
-      {:csv, "~> 2.3"}
+      {:csv, "~> 2.3"},
+      {:scout_apm, "~> 0.0"},
+      {:poison, "~> 2.0"}
     ]
   end
 

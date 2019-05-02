@@ -20,6 +20,7 @@ defmodule StoreWeb do
   def controller do
     quote do
       use Phoenix.Controller, namespace: StoreWeb
+      use ScoutApm.Instrumentation
       import Plug.Conn
       import StoreWeb.Router.Helpers
       import StoreWeb.Gettext

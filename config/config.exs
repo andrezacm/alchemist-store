@@ -5,9 +5,12 @@
 # is restricted to this project.
 use Mix.Config
 
+import_config "scout_apm.exs"
+
 # General application configuration
 config :store,
-  ecto_repos: [Store.Repo]
+  ecto_repos: [Store.Repo],
+  loggers: [{Ecto.LogEntry, :log, []}, {ScoutApm.Instruments.EctoLogger, :log, []}]
 
 # Configures the endpoint
 config :store, StoreWeb.Endpoint,
