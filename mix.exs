@@ -20,7 +20,7 @@ defmodule Store.Mixfile do
   def application do
     [
       mod: {Store.Application, []},
-      extra_applications: [:logger, :runtime_tools, :mongodb_ecto, :ecto, :amqp]
+      extra_applications: [:logger, :runtime_tools, :mongodb_ecto, :ecto, :amqp, :honeybadger]
     ]
   end
 
@@ -44,7 +44,8 @@ defmodule Store.Mixfile do
       {:json, "~> 1.2"},
       {:csv, "~> 2.3"},
       {:scout_apm, "~> 0.0"},
-      {:poison, "~> 2.0"}
+      {:poison, "~> 2.0"},
+      {:honeybadger, "~> 0.1"}
     ]
   end
 

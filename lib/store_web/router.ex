@@ -1,5 +1,6 @@
 defmodule StoreWeb.Router do
   use StoreWeb, :router
+  use Honeybadger.Plug
 
   pipeline :api do
     plug(:accepts, ["json"])
